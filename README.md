@@ -62,6 +62,15 @@ CREATE TABLE Passenger_capacity
 
 5) If you added tables to your database, you will now see a + next to the database name, denoting there are tables in the databse. Click on that to open the database and see the tables. Then click on a table and the Structure tab to see the table structure view.
 
+Next you add values-
+
+INSERT INTO `Customer` (`Name`, `CreditCard_Info`, `contact_number`, `License_number`, `Customer_ID`) VALUES ('Mark ', '16251711', '098271616', '172618161', '7865');
+INSERT INTO `Maintenance` (`MStart_date`, `MFinish_date`, `Registration_plate_`) VALUES ('2021-06-08', '2021-06-15', '12311036');!
+INSERT INTO `Passenger_capacity` (`vehicle_type`, `Registration_plate_`) VALUES ('van', '12311032');
+INSERT INTO `Vehicle` (`Passenger_capacity`, `Registration_plate_`, `fuel_range`, `availability`, `Customer_ID`) VALUES ('32', '12311032', '2500', '3', '2413');
+INSERT INTO `Vehicle_insurance` (`insurance`, `Registration_plate_`) VALUES ('No', '12311032');
+
+
 In order to communicate with the database:
 1) The code must be saved in htdocs which is under MAMP application.
 2) and after you save it type in http://localhost:8888/ 
