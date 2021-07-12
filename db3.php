@@ -27,6 +27,8 @@
       <li><a href="?page=Booking">Booking</a></li>
       <li><a href="?page=Vehicles">Vehicles</a></li>
       <li><a href="?page=Customers">Customers</a></li>
+      <li><a href="https://github.com/shresthasmriti/DB-APPLICATIONS/wiki">Help</a></li>
+
       
     </ul>
   </div>
@@ -44,8 +46,7 @@
         
         echo "<div class='container'> <h1>Books</h1> <br> <table id='example' class='table table-striped table-inverse table-bordered table-hover' cellspacing='0' width='100%'>";
 
-        //echo "<h1>Vehicle</h1><div class='container'> <table class='table table-bordered'>";
-
+        
         $result = $conn->query("SELECT * FROM Customers WHERE ID > 0");
 
         if ($result->num_rows > 0) {
@@ -63,11 +64,6 @@
             }
 
             echo '</tbody></table>';
-            //print("<br/>");
-            //print("<form method=\"post\" action=\"$_SERVER[PHP_SELF]\">");
-            //print("Enter Vehicle ID for more info: <input type=\"text\" name=\"vehicle_number\">");
-            //print("<input type=\"submit\" value=\"Submit\">");
-            //print("</form><br/>");
 
             if ($_GET['vehicle_id']) {
                   $id = $_GET['vehicle_id'];
@@ -334,19 +330,18 @@ if (isset($_POST['ID'])) {
         }
     }
 
-    // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
+    
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
     $page = $_GET['page'];
     if ($page == "" || $page == "Vehicles") {
-        //lists books on main page
+       
         list_vehicles($conn);
     } elseif ($page == "Customers") {
-        //functionality to add author
+       
         add_customer($conn);
     } elseif ($page == "Bookings") {
         
