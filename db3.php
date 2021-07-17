@@ -45,7 +45,7 @@
 
     function booking_page ($conn) {
         echo "<div class='container'> <h1>Booking</h1> <br> <table id='example' class='table table-striped table-inverse table-bordered table-hover' cellspacing='0' width='100%'>";
-        $result = $conn->query("SELECT * FROM Customers WHERE ID > 0");
+        $result = $conn->query("SELECT * FROM Booking WHERE Customer_ID > 0");
 
         if ($result->num_rows > 0) {
             
@@ -221,7 +221,7 @@ if (isset($_POST['Customer_ID'])) {
         "<div class=\"container\">
               <form method=\"POST\">
               </table></div>
-              <div class='container'> <h3>Customers Info</h3> <table class='table table-bordered'>
+              <div class='container'> <h3>Add Customers Info</h3> <table class='table table-bordered'>
             <div class=\"form-group\">
               <label for=\"Customer_ID\">Customer ID</label>
               <input type=\"number\" required min=\"1\" max=\"99999\" class=\"form-control\" id=\"Customer_ID\" placeholder=\"Enter Customer ID\" name=\"Customer_ID\">
