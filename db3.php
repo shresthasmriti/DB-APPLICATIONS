@@ -11,6 +11,7 @@
     <style>
     table, th, td {
       border: 1px solid black;
+      background-color: linen;
     }
     </style>
 
@@ -43,10 +44,7 @@
     $dbname = "Vehicle_rental";
 
     function booking_page ($conn) {
-        
-        echo "<div class='container'> <h1>Books</h1> <br> <table id='example' class='table table-striped table-inverse table-bordered table-hover' cellspacing='0' width='100%'>";
-
-        
+        echo "<div class='container'> <h1>Booking</h1> <br> <table id='example' class='table table-striped table-inverse table-bordered table-hover' cellspacing='0' width='100%'>";
         $result = $conn->query("SELECT * FROM Customers WHERE ID > 0");
 
         if ($result->num_rows > 0) {
@@ -55,7 +53,8 @@
             while($row = $result->fetch_assoc()) {
                 
                 echo "<tr>";
-             echo "<td>".$row["vehicle_id"]."</td>";
+             echo "<td>".$row["Customer_ID"]."</td>";
+             echo "<td> <a href=\"?Customer_ID=".$row["Customer_ID"]."\">".$row["Vehicletype"]."</a></td>";
                 echo "<td>".$row["type_of_vehicle"]."</td>";
                 echo "<td>".$row["capacity"]."</td>";
                 echo "<td>".$row["availability"]."</td>";
@@ -91,7 +90,7 @@
                       
                           $result2 = $stmt->get_result();
 
-                          echo "Vehicle(s): ";
+                          echo "Vehicle: ";
 
                           $count = 1;
                       while($row2 = $result2->fetch_assoc()) {
@@ -122,9 +121,9 @@
 
     echo "<form method='POST'>
     </table></div>
-    <div class='container'> <h3>Add new</h3> <table class='table table-bordered'>
+    <div class='container'> <h3>Add new Booking</h3> <table class='table table-bordered'>
     <tr>
-        <th>ID</th> <td> <input type='text' id = 'ID' name='ID' required='true' maxlength='150'> </td>
+        <th>Customer ID</th> <td> <input type='text' id = 'Customer_ID' name='Customer_ID' required='true' maxlength='150'> </td>
     </tr>
     <tr>
         <th>Customer Name</th> <td> <input type='text' id = 'Customername' name='Customername' required='true' maxlength='14'> </td>
@@ -147,14 +146,14 @@
     </table></div>
 </form>";
 
-if (isset($_POST['ID'])) {
-    $ID = $_POST['ID'];
+if (isset($_POST['Customer_ID'])) {
+    $ID = $_POST['Customer_ID'];
     $customername = $_POST['Customername'];
     $vehicletype = $_POST['Vehicletype'];
     $rentalstartdate = $_POST['Rentalstartdate'];
     $rentalenddate = $_POST['Retalenddate'];
     $totalprice = $_POST['Totalprice'];
-    $cust = $_POST['Customers'];
+    
 
 
     $res = $conn->query("SELECT max(vehicle_id) from Vehicles");
@@ -163,7 +162,7 @@ if (isset($_POST['ID'])) {
     if (!$maxid) { $next = 1; } else { $next = $maxid + 1; }
     $vehicleid = $next;
     
-    $sql = "INSERT into Vehicle values (?,?,?,?,?,?,?,?)";
+    $sql = "INSERT into Vehicles values (?,?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
       $ok = $stmt->bind_param('isssiiii', $vehilceid, $ID, $Customername, $vehicletype, $rentalstartdate, $rentalenddate, $totalprice);
       if (!$ok) { die("Bind param error"); }
@@ -205,7 +204,7 @@ if (isset($_POST['ID'])) {
 
         $sql = "INSERT into booking_page values (?,?)";
         $stmt = $conn->prepare($sql);
-          $ok = $stmt->bind_param('ii', $customer_id, $bookingid);
+          $ok = $stmt->bind_param('ii', $customer_ID);
           if (!$ok) { die("Bind param error"); }
           $ok = $stmt->execute();
           if (!$ok) { die("Execc error"); }
@@ -216,12 +215,13 @@ if (isset($_POST['ID'])) {
 
 }
     
-    function add_customer($conn) {
-        echo "<h2>Customers</h2><br/>";
+    function customer_page($conn) {
         
         echo
         "<div class=\"container\">
               <form method=\"POST\">
+              </table></div>
+              <div class='container'> <h3>Customers Info</h3> <table class='table table-bordered'>
             <div class=\"form-group\">
               <label for=\"Customer_ID\">Customer ID</label>
               <input type=\"number\" required min=\"1\" max=\"99999\" class=\"form-control\" id=\"Customer_ID\" placeholder=\"Enter Customer ID\" name=\"Customer_ID\">
@@ -250,6 +250,8 @@ if (isset($_POST['ID'])) {
             $License_number = $_POST['License_number'];
             $sql = "insert into Customers (Customer_ID, name, contact_number, License_number) values (?,?,?,?)";
             
+
+            
             $stmt = $conn->prepare($sql);
               $ok = $stmt->bind_param('isss', $Customer_ID, $name, $contact_number, $License_number);
               if (!$ok) { die("Bind param error"); }
@@ -262,7 +264,7 @@ if (isset($_POST['ID'])) {
 
     function vehiclerental_page($conn) {
 
-        $result = $conn->query("SELECT vehicletype, Passenger_capacity, Availabilty from Vehicles where availabilty.vehicle_id = vehilces.vehilce_id order by date");
+        $result = $conn->query("SELECT vehicletype, Passenger_capacity, availabilty from Vehicles where availabilty = vehilces order by date");
 
         if ($result->num_rows > 0) {
 
@@ -285,7 +287,7 @@ if (isset($_POST['ID'])) {
         echo
          "<form method='POST'>
               </table></div>
-              <div class='container'> <h4>Add new</h4> <table class='table table-bordered'>
+              <div class='container'> <h4>Availabilty: </h4> <table class='table table-bordered'>
               <tr> <th>Vehicle Type</th> <th> Rental Start Date </th> <th> Rental End Date </th> </tr> </th> </tr>
               <tr>
                   <td> <input type='text' id = 'Vehicletype' name='Vehicletype' required='true' maxlength='150'> </td>
@@ -301,27 +303,10 @@ if (isset($_POST['ID'])) {
         if (isset($_POST['Vehicletype'])) {
             $Vehicletype = $_POST['Vehicletype'];
             $availbilty = $_POST['Availability'];
-           
-            $stmt = $conn->prepare("SELECT vehicle_id FROM Vehicles WHERE title = ?");
-              $ok = $stmt->bind_param("s", $title);
-              if (!$ok) { die("Bind param error"); }
-              $ok = $stmt->execute();
-              if (!$ok) { die("Exec error"); }
-            $result = $stmt->get_result();
-            $id_result = $result->fetch_row()[0];
-
-            $res = $conn->query("UPDATE  Vehicles SET availability = availability - 1 WHERE vehicle_id = ".$id_result);
             
-            if (!$res) { die("Query failed"); }
-
-            $res = $conn->query("SELECT max(bookedvehicle_id) from vehicle_booked");
-            if (!$res) { die("Query failed"); }
-            $maxid = $res->fetch_row()[0];
-            if (!$maxid) { $next = 1; } else { $next = $maxid + 1; }
-            
-            $sql = "INSERT into vehicle_booked values (?,?,?,?)";
+            $sql = "INSERT into vehicletype values (?,?,?,?)";
             $stmt = $conn->prepare($sql);
-              $ok = $stmt->bind_param('isii', $next, $date, $emp_id, $id_result);
+              $ok = $stmt->bind_param('isii', $Customer_ID, $id_result);
               if (!$ok) { die("Bind param error"); }
               $ok = $stmt->execute();
               if (!$ok) { die("Exec error"); }
@@ -337,23 +322,19 @@ if (isset($_POST['ID'])) {
 
     $page = $_GET['page'];
     if ($page == "" || $page == "Vehicles") {
-       
-        vehiclerental_page($conn);
+       vehiclerental_page($conn);
     } elseif ($page == "Customers") {
        
-        add_customer($conn);
+        customer_page($conn);
     } elseif ($page == "Bookings") {
         booking_page($conn);
-    } else {
-        
-    }
+    } 
 
     $conn->close();
 
 ?>
 
 </body>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
@@ -363,4 +344,5 @@ if (isset($_POST['ID'])) {
     } );
   });
 </script>
+
 </html>
