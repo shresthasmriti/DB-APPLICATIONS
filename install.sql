@@ -1,6 +1,6 @@
 CREATE TABLE Customer
 (
-  Name INT NOT NULL,
+  Name VARCHAR(30) NOT NULL,
   CreditCard_Info INT NOT NULL,
   contact_number INT NOT NULL,
   License_number INT NOT NULL,
