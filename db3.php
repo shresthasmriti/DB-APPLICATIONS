@@ -238,7 +238,7 @@ if (isset($_POST['Customer_ID'])) {
               <label for=\"License_number\">License number</label>
               <input type=\"number\" required maxlength=\"30\" class=\"form-control\" id=\"License_number\" placeholder=\"Enter License number\" name=\"License_number\">
             </div>
-            <button type=\"submit\" class=\"btn btn-default\">Submit</button>
+            <button type=\"submit\" class=\"btn btn-default\">Submit Customer Info</button>
           </form>
         </div>";
         
