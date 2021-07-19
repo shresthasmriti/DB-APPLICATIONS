@@ -29,6 +29,17 @@ CREATE TABLE Maintenance
   FOREIGN KEY (Registration_plate_) REFERENCES Vehicle(Registration_plate_)
 );
 
+CREATE TABLE Booking
+(
+ Booking_ID INT NOT NULL,
+ price INT NOT NULL,
+ availability INT NOT NULL,
+ Registration_plate_ INT NOT NULL,
+ Customer_ID INT NOT NULL,
+ FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID),
+ FOREIGN KEY (Registration_plate_) REFERENCES Vehicle(Registration_plate_)
+);
+
 CREATE TABLE Vehicle_insurance
 (
   insurance VARCHAR(30) NOT NULL,
@@ -51,6 +62,9 @@ INSERT INTO `Customer` VALUES ('True', '172682122', '981726181', '128381715', '2
 INSERT INTO `Vehicle` VALUES ('10', '1786545', '3000', '5', '2345');
 INSERT INTO `Vehicle` VALUES ('32', '12311032', '2500', '3', '2413');
 INSERT INTO `Vehicle` VALUES ('20', '12311036', '2500', '3', '2348');
+INSERT INTO `Booking` VALUES ('1', '2000', '5', '1786545', '2345');
+INSERT INTO `Booking` VALUES ('2', '1500', '3', '12311032', '2413');
+INSERT INTO `Booking` VALUES ('3', '1000', '3', '12311036', '2348');
 INSERT INTO `Maintenance` VALUES ('2021-06-08', '2021-06-15', '12311036');
 INSERT INTO `Maintenance` VALUES ('2021-06-01', '2021-06-06', '12311032');
 INSERT INTO `Vehicle_insurance` VALUES ('Yes', '1786545');
