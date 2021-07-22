@@ -49,14 +49,13 @@
 
         if ($result->num_rows > 0) {
             
-               echo "<tr><th>ID</th> <th>Type of vehicle</th> <th>Capacity(THB)</th> <th>Availability</th></tr>";
+               echo "<tr><th>ID</th> <th>Type of vehicle</th> <th>Availability</th></tr>";
             while($row = $result->fetch_assoc()) {
                 
                 echo "<tr>";
              echo "<td>".$row["Customer_ID"]."</td>";
-             echo "<td> <a href=\"?Customer_ID=".$row["Customer_ID"]."\">".$row["Vehicletype"]."</a></td>";
-                echo "<td>".$row["type_of_vehicle"]."</td>";
-                echo "<td>".$row["capacity"]."</td>";
+             
+                echo "<td>".$row["Vehicletype"]."</td>";
                 echo "<td>".$row["availability"]."</td>";
 
                 echo "</tr>";
@@ -258,6 +257,9 @@ if (isset($_POST['Customer_ID'])) {
               $ok = $stmt->execute();
               if (!$ok) { die("Exec error"); }
             $result = $stmt->get_result();
+
+
+            
         }
     }
 
@@ -326,7 +328,7 @@ if (isset($_POST['Customer_ID'])) {
     } elseif ($page == "Customers") {
        
         customer_page($conn);
-    } elseif ($page == "Bookings") {
+    } elseif ($page == "Booking") {
         booking_page($conn);
     } 
 
